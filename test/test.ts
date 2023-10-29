@@ -113,7 +113,7 @@ test("fails when Node version satisfies engines.node but dependencies don't", (t
         [
           "➤ YN0000: · Yarn 4.0.1",
           "➤ YN0000: ┌ Project validation",
-          `➤ YN0000: │ The current @yarnpkg/builder version >=18.12.0 does not satisfy the required version >= 10.`,
+          `➤ YN0000: │ The current @yarnpkg/builder Node version >=18.12.0 does not satisfy the required version >= 10.`,
           "➤ YN0000: └ Completed",
           "➤ YN0000: · Failed with errors",
         ].join("\n"),
@@ -135,7 +135,7 @@ test("fails when Node version satisfies engines.node but dependencies don't", (t
         [
           "➤ YN0000: · Yarn 4.0.1",
           "➤ YN0000: ┌ Project validation",
-          `➤ YN0000: │ The current @yarnpkg/builder version >=18.12.0 does not satisfy the required version >= 10.`,
+          `➤ YN0000: │ The current @yarnpkg/builder Node version >=18.12.0 does not satisfy the required version >= 10.`,
           "➤ YN0000: └ Completed",
           "➤ YN0000: · Failed with errors",
         ].join("\n"),
