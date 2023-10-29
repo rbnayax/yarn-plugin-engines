@@ -321,6 +321,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/resolve@npm:^1":
+  version: 1.20.4
+  resolution: "@types/resolve@npm:1.20.4"
+  checksum: d9ddf2a9231df86dd0e98046df531ac63d96d3a97db635d00a25f33520535d0679a2c451751fe26a2221e209c91f6d03286f8c6595bf5f71eddc3d7a7c64ee3f
+  languageName: node
+  linkType: hard
+
 "@types/responselike@npm:^1.0.0":
   version: 1.0.2
   resolution: "@types/responselike@npm:1.0.2"
@@ -2698,6 +2705,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"resolve@npm:^1.22.8":
+  version: 1.22.8
+  resolution: "resolve@npm:1.22.8"
+  dependencies:
+    is-core-module: "npm:^2.13.0"
+    path-parse: "npm:^1.0.7"
+    supports-preserve-symlinks-flag: "npm:^1.0.0"
+  bin:
+    resolve: bin/resolve
+  checksum: c473506ee01eb45cbcfefb68652ae5759e092e6b0fb64547feadf9736a6394f258fbc6f88e00c5ca36d5477fbb65388b272432a3600fa223062e54333c156753
+  languageName: node
+  linkType: hard
+
 "resolve@npm:^2.0.0-next.5":
   version: 2.0.0-next.5
   resolution: "resolve@npm:2.0.0-next.5"
@@ -2708,6 +2728,19 @@ __metadata:
   bin:
     resolve: bin/resolve
   checksum: 2d6fd28699f901744368e6f2032b4268b4c7b9185fd8beb64f68c93ac6b22e52ae13560ceefc96241a665b985edf9ffd393ae26d2946a7d3a07b7007b7d51e79
+  languageName: node
+  linkType: hard
+
+"resolve@patch:resolve@npm%3A^1.22.8#optional!builtin<compat/resolve>":
+  version: 1.22.8
+  resolution: "resolve@patch:resolve@npm%3A1.22.8#optional!builtin<compat/resolve>::version=1.22.8&hash=c3c19d"
+  dependencies:
+    is-core-module: "npm:^2.13.0"
+    path-parse: "npm:^1.0.7"
+    supports-preserve-symlinks-flag: "npm:^1.0.0"
+  bin:
+    resolve: bin/resolve
+  checksum: f345cd37f56a2c0275e3fe062517c650bb673815d885e7507566df589375d165bbbf4bdb6aa95600a9bc55f4744b81f452b5a63f95b9f10a72787dba3c90890a
   languageName: node
   linkType: hard
 
@@ -3382,12 +3415,14 @@ __metadata:
   resolution: "yarn-plugin-engines@workspace:."
   dependencies:
     "@types/node": "npm:^20.8.9"
+    "@types/resolve": "npm:^1"
     "@types/semver": "npm:^7.5.4"
     "@types/tape": "npm:^5.6.3"
     "@yarnpkg/builder": "npm:^4.0.0"
     "@yarnpkg/core": "npm:^4.0.1"
     "@yarnpkg/fslib": "npm:^3.0.1"
     prettier: "npm:^3.0.3"
+    resolve: "npm:^1.22.8"
     semver: "npm:^7.5.4"
     tape: "npm:^5.7.2"
     ts-node: "npm:^10.9.1"

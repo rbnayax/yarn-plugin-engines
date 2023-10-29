@@ -10,7 +10,7 @@ export class NodeEngineChecker extends EngineChecker {
     return "Node";
   }
 
-  verifyEngine(engines: Record<string, string>): void {
+  verifyEngine(engines: Record<string, string>): string | undefined {
     let nodeRequiredVersion = engines.node;
     if (nodeRequiredVersion == null) {
       return;
@@ -21,6 +21,7 @@ export class NodeEngineChecker extends EngineChecker {
     if (!satisfies(process.version, nodeRequiredVersion, { includePrerelease: true })) {
       this.throwWrongEngineError(process.version.replace(/^v/i, ""), nodeRequiredVersion.replace(/^v/i, ""));
     }
+    return nodeRequiredVersion;
   }
 
   protected resolveNvmRequiredVersion = (): string => {

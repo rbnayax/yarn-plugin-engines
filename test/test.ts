@@ -5,9 +5,13 @@ import test from "tape";
 
 const isWin = process.platform === "win32";
 
-const updatePackage = (values: { engines?: { node?: string; yarn?: string } }): void => {
+const updatePackage = (values: {
+  engines?: { node?: string; yarn?: string };
+  dependencies?: Record<string, string>;
+}): void => {
   const content = JSON.parse(readFileSync(resolve(__dirname, "..", "package.json"), "utf-8"));
   delete content.engines;
+  delete content.dependencies;
   Object.assign(content, values);
   writeFileSync(resolve(__dirname, "..", "package.json"), JSON.stringify(content, undefined, "  "));
 };

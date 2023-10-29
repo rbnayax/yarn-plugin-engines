@@ -1,11 +1,9 @@
-import { Plugin, Project } from "@yarnpkg/core";
-import {
-  EngineChecker,
-  EngineCheckerOptions,
-  ErrorReporter,
-  NodeEngineChecker,
-  YarnEngineChecker,
-} from "./engine-checkers";
+import { Plugin, Project, Hooks, HardDependencies } from "@yarnpkg/core";
+import { EngineCheckerOptions, ErrorReporter, NodeEngineChecker, YarnEngineChecker } from "./engine-checkers";
+import { sync } from "resolve";
+import path from "path";
+import { readFileSync } from "fs";
+import { NodeDependencyEngineChecker } from "./engine-checkers/node.dep.engine-checker";
 
 const verifyEngines =
   (errorReporter: ErrorReporter) =>
@@ -16,14 +14,41 @@ const verifyEngines =
 
     const { engines = {} } = project.getWorkspaceByCwd(project.cwd).manifest.raw;
     const options: EngineCheckerOptions = { project, errorReporter };
-    const engineCheckers: EngineChecker[] = [new NodeEngineChecker(options), new YarnEngineChecker(options)];
-    engineCheckers.forEach((engineChecker) => engineChecker.verifyEngine(engines));
+    new YarnEngineChecker(options).verifyEngine(engines);
+    const nodeRequiredVersion = new NodeEngineChecker(options).verifyEngine(engines);
+    if (nodeRequiredVersion) {
+      const checked = new Set<string>();
+      for (const workspace of project.workspaces) {
+        for (const dependencyType of [`dependencies`, `devDependencies`] as Array<HardDependencies>) {
+          for (const descriptor of workspace.manifest[dependencyType].values()) {
+            if (project.tryWorkspaceByDescriptor(descriptor) === null) {
+              let fullName = descriptor.name;
+              if (descriptor.scope) {
+                fullName = path.join(`@${descriptor.scope}`, fullName);
+              }
+              const pkgJsonPath = sync(path.join(fullName, "package.json"), {
+                includeCoreModules: false,
+                basedir: workspace.cwd,
+              });
+              if (checked.has(pkgJsonPath)) {
+                continue;
+              }
+              checked.add(pkgJsonPath);
+              const engines = JSON.parse(readFileSync(pkgJsonPath, { encoding: "utf-8" })).engines;
+              new NodeDependencyEngineChecker(options, nodeRequiredVersion, fullName).verifyEngine(engines);
+            }
+          }
+        }
+      }
+    }
   };
 
-const plugin: Plugin = {
+const setupScriptEnvironment = verifyEngines(ErrorReporter.Console);
+
+const plugin: Plugin<Hooks> = {
   hooks: {
     validateProject: verifyEngines(ErrorReporter.Yarn),
-    setupScriptEnvironment: verifyEngines(ErrorReporter.Console),
+    setupScriptEnvironment: async (project: Project) => setupScriptEnvironment(project),
   },
 };
 
