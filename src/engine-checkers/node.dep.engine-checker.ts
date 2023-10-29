@@ -15,7 +15,7 @@ export class NodeDependencyEngineChecker extends EngineChecker {
   }
 
   get engine(): string {
-    return this.dependencyName;
+    return `${this.dependencyName} Node`;
   }
 
   verifyEngine(engines: Record<string, string> | undefined): string | undefined {
