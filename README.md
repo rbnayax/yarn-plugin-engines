@@ -5,7 +5,7 @@ Yarn Berry plugin to enforce Node version.
 ## Installation
 
 ```sh
-$ yarn plugin import https://raw.githubusercontent.com/devoto13/yarn-plugin-engines/main/bundles/%40yarnpkg/plugin-engines.js
+$ yarn plugin import https://raw.githubusercontent.com/rbnayax/yarn-plugin-engines/main/bundles/%40yarnpkg/plugin-engines.js
 ```
 
 ## Usage
@@ -52,7 +52,8 @@ The current node version 14.17.3 does not satisfy the required version >= 42.
 
 ## Disable the check
 
-Sometimes it is desired to ignore the engines check in certain environment. For example, when running `renovate` which uses its own Node version not controlled by the project developer. In such cases `PLUGIN_YARN_ENGINES_DISABLE=1` environment variable can be set to disable the plugin.
+Sometimes it is desired to ignore the engines check in certain environment. For example, when running `renovate` which uses its own Node version not controlled by the project developer. In such cases `PLUGIN_YARN_ENGINES_DISABLE=1` environment variable can be set to disable the plugin.  
+You can also use `PLUGIN_YARN_DEP_ENGINES_DISABLE=1` environment variable to disable only the dependence engine checks.
 
 ## Motivation
 
