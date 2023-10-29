@@ -6,7 +6,7 @@ import { readFileSync } from "fs";
 import { NodeDependencyEngineChecker } from "./engine-checkers/node.dep.engine-checker";
 
 const verifyEngines =
-  (errorReporter: ErrorReporter) =>
+  (errorReporter: ErrorReporter, checkDeps?: boolean) =>
   (project: Project): void => {
     if (process.env.PLUGIN_YARN_ENGINES_DISABLE != null) {
       return;
@@ -16,7 +16,7 @@ const verifyEngines =
     const options: EngineCheckerOptions = { project, errorReporter };
     new YarnEngineChecker(options).verifyEngine(engines);
     const nodeRequiredVersion = new NodeEngineChecker(options).verifyEngine(engines);
-    if (nodeRequiredVersion && !process.env.PLUGIN_YARN_DEP_ENGINES_DISABLE) {
+    if (checkDeps && nodeRequiredVersion && !process.env.PLUGIN_YARN_DEP_ENGINES_DISABLE) {
       const checked = new Set<string>();
       for (const workspace of project.workspaces) {
         for (const dependencyType of [`dependencies`, `devDependencies`] as Array<HardDependencies>) {
@@ -26,10 +26,15 @@ const verifyEngines =
               if (descriptor.scope) {
                 fullName = path.join(`@${descriptor.scope}`, fullName);
               }
-              const pkgJsonPath = sync(path.join(fullName, "package.json"), {
-                includeCoreModules: false,
-                basedir: workspace.cwd,
-              });
+              let pkgJsonPath: string;
+              try {
+                const pkgJsonPath = sync(path.join(fullName, "package.json"), {
+                  includeCoreModules: false,
+                  basedir: workspace.cwd,
+                });
+              } catch (err) {
+                continue;
+              }
               if (checked.has(pkgJsonPath)) {
                 continue;
               }
@@ -47,7 +52,7 @@ const setupScriptEnvironment = verifyEngines(ErrorReporter.Console);
 
 const plugin: Plugin<Hooks> = {
   hooks: {
-    validateProject: verifyEngines(ErrorReporter.Yarn),
+    validateProject: verifyEngines(ErrorReporter.Yarn, true),
     setupScriptEnvironment: async (project: Project) => setupScriptEnvironment(project),
   },
 };
