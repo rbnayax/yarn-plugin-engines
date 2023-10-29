@@ -7,11 +7,9 @@ const isWin = process.platform === "win32";
 
 const updatePackage = (values: {
   engines?: { node?: string; yarn?: string };
-  dependencies?: Record<string, string>;
 }): void => {
   const content = JSON.parse(readFileSync(resolve(__dirname, "..", "package.json"), "utf-8"));
   delete content.engines;
-  delete content.dependencies;
   Object.assign(content, values);
   writeFileSync(resolve(__dirname, "..", "package.json"), JSON.stringify(content, undefined, "  "));
 };
@@ -101,6 +99,50 @@ test("does nothing when Node version satisfies engines.node", (t) => {
 
   t.equal(exitCode, 0);
   t.match(output, new RegExp("^➤ YN0000: · Yarn 4.0.1\\n➤ YN0000: ┌ Resolution step"));
+});
+
+test("fails when Node version satisfies engines.node but dependencies don't", (t) => {
+  t.plan(2);
+
+  updatePackage({ engines: { node: ">= 10" } });
+  const { stdout: output, status: exitCode } = install();
+
+  t.equal(exitCode, 1);
+  t.match(
+    output,
+    new RegExp(
+      "^" +
+      [
+        "➤ YN0000: · Yarn 4.0.1",
+        "➤ YN0000: ┌ Project validation",
+        `➤ YN0000: │ The current @yarnpkg/builder version >=18.12.0 does not satisfy the required version >= 10.`,
+        "➤ YN0000: └ Completed",
+        "➤ YN0000: · Failed with errors",
+      ].join("\n"),
+    ),
+  );
+});
+
+test("fails when Node version satisfies engines.node but dependencies don't", (t) => {
+  t.plan(2);
+
+  updatePackage({ engines: { node: ">= 10" } });
+  const { stdout: output, status: exitCode } = install();
+
+  t.equal(exitCode, 1);
+  t.match(
+    output,
+    new RegExp(
+      "^" +
+      [
+        "➤ YN0000: · Yarn 4.0.1",
+        "➤ YN0000: ┌ Project validation",
+        `➤ YN0000: │ The current @yarnpkg/builder version >=18.12.0 does not satisfy the required version >= 10.`,
+        "➤ YN0000: └ Completed",
+        "➤ YN0000: · Failed with errors",
+      ].join("\n"),
+    ),
+  );
 });
 
 test("fails script execution when Node version does not satisfy the .nvmrc file", (t) => {
