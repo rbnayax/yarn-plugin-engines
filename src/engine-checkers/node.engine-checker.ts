@@ -29,15 +29,15 @@ export class NodeEngineChecker extends EngineChecker {
     const engineText = formatUtils.applyStyle(
       configuration,
       formatUtils.pretty(configuration, this.engine, "green"),
-      2
+      2,
     );
     if (!existsSync(nvmrcPath)) {
       this.throwError(
         formatUtils.pretty(
           configuration,
           `Unable to verify the ${engineText} version. The .nvmrc file does not exist.`,
-          "red"
-        )
+          "red",
+        ),
       );
       return;
     }
@@ -50,8 +50,8 @@ export class NodeEngineChecker extends EngineChecker {
       formatUtils.pretty(
         configuration,
         `Unable to verify the ${engineText} version. The ${nvmrcText} file contains an invalid semver range.`,
-        "red"
-      )
+        "red",
+      ),
     );
   };
 }

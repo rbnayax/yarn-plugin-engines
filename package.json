@@ -1,24 +1,27 @@
 {
   "name": "yarn-plugin-engines",
   "main": "./src/index.ts",
-  "packageManager": "yarn@3.2.0",
+  "packageManager": "yarn@4.0.1",
   "devDependencies": {
-    "@types/node": "^16.11.26",
-    "@types/semver": "^7.3.9",
-    "@types/tape": "^4.13.2",
-    "@yarnpkg/builder": "^3.2.0",
-    "@yarnpkg/core": "^3.2.0",
-    "@yarnpkg/fslib": "^2.6.1",
-    "prettier": "^2.6.2",
-    "semver": "^7.3.5",
-    "tape": "^5.5.2",
-    "ts-node": "^10.7.0",
-    "typescript": "~4.6.3"
+    "@types/node": "^20.8.9",
+    "@types/semver": "^7.5.4",
+    "@types/tape": "^5.6.3",
+    "@yarnpkg/builder": "^4.0.0",
+    "@yarnpkg/core": "^4.0.1",
+    "@yarnpkg/fslib": "^3.0.1",
+    "prettier": "^3.0.3",
+    "semver": "^7.5.4",
+    "tape": "^5.7.2",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
   },
   "scripts": {
     "format": "prettier --write '{src,test}/**/*.ts'",
     "format:check": "prettier --check '{src,test}/**/*.ts'",
     "build": "builder build plugin && yarn plugin import ./bundles/@yarnpkg/plugin-engines.js",
     "test": "tape -r ts-node/register test/test.ts"
+  },
+  "engines": {
+    "node": "^20.9"
   }
 }
