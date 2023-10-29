@@ -16,7 +16,7 @@ const verifyEngines =
     const options: EngineCheckerOptions = { project, errorReporter };
     new YarnEngineChecker(options).verifyEngine(engines);
     const nodeRequiredVersion = new NodeEngineChecker(options).verifyEngine(engines);
-    if (nodeRequiredVersion) {
+    if (nodeRequiredVersion && !process.env.PLUGIN_YARN_DEP_ENGINES_DISABLE) {
       const checked = new Set<string>();
       for (const workspace of project.workspaces) {
         for (const dependencyType of [`dependencies`, `devDependencies`] as Array<HardDependencies>) {

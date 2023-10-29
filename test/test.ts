@@ -93,7 +93,11 @@ test("does nothing when Node version satisfies engines.node", (t) => {
   t.plan(2);
 
   updatePackage({ engines: { node: ">= 10" } });
-  const { stdout: output, status: exitCode } = install();
+  const { stdout: output, status: exitCode } = install({
+    env: {
+      PLUGIN_YARN_DEP_ENGINES_DISABLE: 1,
+    },
+  });
 
   t.equal(exitCode, 0);
   t.match(output, new RegExp("^➤ YN0000: · Yarn 4.0.1\\n➤ YN0000: ┌ Resolution step"));
@@ -138,7 +142,11 @@ test("does nothing when Node version satisfies the .nvmrc file", (t) => {
 
   updatePackage({ engines: { node: ".nvmrc" } });
   updateNvmrc(">= 10");
-  const { stdout: output, status: exitCode } = install();
+  const { stdout: output, status: exitCode } = install({
+    env: {
+      PLUGIN_YARN_DEP_ENGINES_DISABLE: 1,
+    },
+  });
   restoreNvmrc();
 
   t.equal(exitCode, 0);
