@@ -28,7 +28,7 @@ const verifyEngines =
               }
               let pkgJsonPath: string;
               try {
-                const pkgJsonPath = sync(path.join(fullName, "package.json"), {
+                pkgJsonPath = sync(path.join(fullName, "package.json"), {
                   includeCoreModules: false,
                   basedir: workspace.cwd,
                 });
